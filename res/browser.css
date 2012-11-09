@@ -1,0 +1,94 @@
+body {
+    background-color: #eee;
+    margin: 0;
+}
+
+hr {
+    border: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 1px;
+    background-color: lightGrey;
+}
+
+td {
+    padding: 0px;
+}
+
+#header {
+    height: 65px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid lightGrey;
+    padding: 5px;
+    z-index: 1;
+    text-align: left;
+    position: fixed;
+    margin: 0;
+}
+
+#top-topic-table {
+    margin-right: 15px;
+    font-size: 80%;
+}
+
+#top-topic-table td {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+}
+
+#text-table {
+    position: relative;
+    top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+.text-line {
+    white-space: nowrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: white;
+    border-left: 1px solid lightGrey;
+    border-right: 1px solid lightGrey;
+}
+
+.first-row .text-line {
+    border-top: 1px solid lightGrey;
+}
+
+.last-row .text-line {
+    border-bottom: 1px solid lightGrey;
+}
+
+#chart-cell {
+    padding-right: 10px;
+}
+
+.marginal-link-cell {
+    padding-right: 10px;
+}
+
+.marginal-link a {
+    color: black;
+    text-decoration: none;
+}
+
+#popup-cell {
+    padding-left: 10px;
+    border-bottom: none;
+}
+
+#popup-content {
+    background-color: white;
+    border: 1px solid lightGrey;
+    padding: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
