@@ -1,7 +1,7 @@
 The Networked Corpus
 ===============
 
-The Networked Corpus provides a way of navigating a collection of texts using a topic model.  It consists of a Python script that takes in a directory full of plain text files and a topic model computed using [MALLET](mallet.cs.umass.edu), and generates a collection of HTML files that you can use in your browser.
+The Networked Corpus provides a way of navigating a collection of texts using a topic model.  It consists of a Python script that takes in a directory full of plain text files and a topic model computed using [MALLET](http://mallet.cs.umass.edu), and generates a collection of HTML files that you can use in your browser.
 
 Project Web site: [networkedcorpus.com](http://networkedcorpus.com)
 
