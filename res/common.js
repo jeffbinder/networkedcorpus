@@ -82,7 +82,7 @@ function _show_popup(topic, full, fixed, notch_pos, center)
 	else
 	    html.push("<hr />No exemplary passages for this topic.<br />");
     } else {
-	if (ndocs)
+	if (ndocs > 1)
 	    html.push("<hr />Other exemplary passages for this topic:<br />");
 	else
 	    html.push("<hr />No other exemplary passages for this topic.<br />");
