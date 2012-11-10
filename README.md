@@ -40,14 +40,14 @@ Next, run MALLET's machine learning algorithm to create a topic model:
 
 This may take a few minutes to run.  Feel free to play with the settings at this stage - in particular, the ideal number of topics may differ significantly from corpus to corpus.
 
-Finally, run the Networked Corpus script.  If you are in the directory that contains the 'topic_state.gz', 'topic_keys.txt', and 'doc_topics.txt' files, you can just do it like this (assuming that "gen-networked-corpus" is the path to the script):
+Finally, run the Networked Corpus script.  If you are in the directory that contains the 'topic_state.gz', 'topic_keys.txt', and 'doc_topics.txt' files, you can just do it like this (assuming that "gen-networked-corpus.py" is the path to the script):
 
-    gen-networked-corpus --input-dir <DIRECTORY CONTAINING FILES> --output-dir <OUTPUT DIRECTORY>
+    python gen-networked-corpus.py --input-dir <DIRECTORY CONTAINING FILES> --output-dir <OUTPUT DIRECTORY>
 
 This will create a bunch of HTML files in the output directory, as well as copying the necessary JavaScript, CSS, and image files.  You can then open "index.html" in your browser, and start playing with the results.
 
 The Networked Corpus script has a few options that you can adjust.  To see a list of them, run:
 
-    gen-networked-corpus --help
+    python gen-networked-corpus.py --help
 
 Enjoy!
