@@ -125,8 +125,8 @@ topic_index_html2 = '''
 </html>
 '''
 
-# List of files to copy to the output directory (from the directory in
-# which the script resides).
+# List of files to copy to the output directory (from the 'res' directory
+# in the directory in which the script resides).
 resource_files = ['browser.css', 'index.css',
                   'common.js', 'browser.js', 'index.js',
                   'jquery.js', 'protovis.min.js', 'protovis-msie.min.js',
