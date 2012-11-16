@@ -153,7 +153,8 @@ def alphanumeric_sort(l):
 
 def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
                     outdir, min_topic_appearances, min_pointedness,
-                    num_words_per_topic, resdir, bandwidth):
+                    num_words_per_topic, resdir, bandwidth,
+                    extra_stopwords):
 
     topic_state = {}
     topic_appearances_by_doc = {}
@@ -161,10 +162,16 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
     docs_by_topic = {}
     top_words_by_topic = {}
 
-    # Load 'stopwords.txt' from the resource directory.
+    # Load 'stopwords.txt' from the resource directory, as well as the
+    # file with additional stopwords (if one is specified).
     stopwords_file = open(os.path.join(resdir, 'stopwords.txt'))
     stopwords = stopwords_file.read().split(' ')
     stopwords_file.close()
+    if extra_stopwords:
+        extra_stopwords_file = open(extra_stopwords)
+        stopwords += tokenize(extra_stopwords_file.read())
+        extra_stopwords_file.close()
+    stopwords = set(stopwords)
 
     # Load the data from the MALLET topic-state file.
     f = gzip.open(in_topic_state, 'r')
@@ -254,8 +261,8 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
                 if match_tok.isalpha() and match_tok not in stopwords:
                     wordtype, topic = state.pop(0)
                     if wordtype != match_tok:
-                        print(doc, 'line', i, ': expected', wordtype,
-                              'found', match_tok)
+                        print doc, 'line', i, ': expected', wordtype, \
+                            'but found', match_tok
                         exit()
                 else:
                     topic = None
@@ -478,6 +485,11 @@ if __name__ == '__main__':
                       type=float, action='store', default=6.0,
                       help='amount of smoothing to apply to the density'
                       ' functions (default 6.0)')
+
+    parser.add_option('--extra-stopwords', dest='extra_stopwords',
+                      type=str, action='store', default=None,
+                      help='file (whitespace-delimited) containing extra'
+                      ' stopwords')
 
     (options, args) = parser.parse_args()
 
