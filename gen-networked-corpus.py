@@ -168,7 +168,7 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
     stopwords = stopwords_file.read().split(' ')
     stopwords_file.close()
     if extra_stopwords:
-        extra_stopwords_file = open(extra_stopwords)
+        extra_stopwords_file = codecs.open(extra_stopwords, 'r', 'utf-8')
         stopwords += tokenize(extra_stopwords_file.read())
         extra_stopwords_file.close()
     stopwords = set(stopwords)
