@@ -151,10 +151,32 @@ def alphanumeric_sort(l):
     return sorted(l, key=lambda s: [int(x) if x.isdigit() else x
                                     for x in re.split('([0-9]+)', s)] )
 
+def parse_subdoc(subdoc):
+    # Parse the standard form in which subunit filenames are supposed to be.
+    subdoc = os.path.split(subdoc)[-1]
+    try:
+        subdoc_base, ext = subdoc.split('.')
+    except ValueError:
+        subdoc_base = subdoc
+        ext = None
+    try:
+        doc, subdoc_index = subdoc_base.split('-')
+        subdoc_index = int(subdoc_index)
+    except ValueError:
+        print ('Error: for the --model-trained-on-subunits option to'
+               ' work, the files passed to MALLET must be of the'
+               ' form "docname-subunit[.ext]" where docname is the'
+               ' base name of one of the complete text files and'
+               ' subunit is an integer.')
+        exit()
+    if ext is not None:
+        doc += '.' + ext
+    return doc, subdoc_index
+
 def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
                     outdir, min_topic_appearances, min_pointedness,
                     num_words_per_topic, resdir, bandwidth,
-                    extra_stopwords):
+                    extra_stopwords, subunits):
 
     topic_state = {}
     topic_appearances_by_doc = {}
@@ -176,33 +198,68 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
     # Load the data from the MALLET topic-state file.
     f = gzip.open(in_topic_state, 'r')
     f.readline(); f.readline(); f.readline()
-    for line in f.readlines():
-        line = unicode(line, 'utf-8').strip()
-        docnum, doc, pos, wordtypeindex, wordtype, topic = line.split(' ')
-        topic = int(topic)
-        doc = os.path.split(doc)[-1]
-        topic_state.setdefault(doc, []) \
-            .append((wordtype, topic))
-        topic_appearances_by_doc.setdefault(doc, set()).add(topic)
+    if subunits:
+        subunit_topic_state = {}
+
+        # The topic_stage.gz file will be organized by subunit, so we will
+        # need to do some reconstruction.
+        for line in f.readlines():
+            line = unicode(line, 'utf-8').strip()
+            subdocnum, subdoc, pos, wordtypeindex, wordtype, topic \
+                = line.split(' ')
+            topic = int(topic)
+            # Figure out which of the original documents this is a subunit of.
+            doc, subunit_index = parse_subdoc(subdoc)
+            subunit_topic_state.setdefault(doc, {}) \
+                .setdefault(subunit_index, []) \
+                .append((wordtype, topic))
+            topic_appearances_by_doc.setdefault(doc, set()).add(topic)
+
+        # Construct topic state for the original documents.
+        for doc in subunit_topic_state:
+            for subunit_index in sorted(subunit_topic_state[doc].keys()):
+                topic_state.setdefault(doc, [])
+                topic_state[doc] += subunit_topic_state[doc][subunit_index]
+
+    else:
+        for line in f.readlines():
+            line = unicode(line, 'utf-8').strip()
+            docnum, doc, pos, wordtypeindex, wordtype, topic = line.split(' ')
+            topic = int(topic)
+            doc = os.path.split(doc)[-1]
+            topic_state.setdefault(doc, []) \
+                .append((wordtype, topic))
+            topic_appearances_by_doc.setdefault(doc, set()).add(topic)
 
     # Load the data from the MALLET doc-topic file
     f = open(in_doc_topics, 'r')
     f.readline()
+    topic_coefs_by_doc = {}
     for line in f.readlines():
         line = line.split('\t')
         doc = line[1].split('/')[-1].replace('%20', ' ').replace('%3F', '?')
-        top_topics_by_doc[doc] = []
         line = line[2:]
         ntopics = len(line) / 2
         if ntopics > 9:
             ntopics = 9;
+        if subunits:
+            doc, subunit_index = parse_subdoc(doc)
         for i in xrange(0, ntopics):
             topic = int(line[i*2])
             coef = float(line[i*2 + 1])
             # Only include topics that account for at least one word.
             if topic in topic_appearances_by_doc[doc]:
-                top_topics_by_doc[doc].append(topic)
-                docs_by_topic.setdefault(topic, []).append(doc)
+                topic_coefs_by_doc.setdefault(doc, {}).setdefault(topic, 0.0)
+                topic_coefs_by_doc[doc][topic] += coef
+                # If we are in subunit mode, we will come across each
+                # document multiple times, so we sum up all the coefs.
+
+    # Sort out the top topics by document.
+    for doc in topic_coefs_by_doc:
+        for topic in sorted(topic_coefs_by_doc[doc],
+                            key=lambda topic: -topic_coefs_by_doc[doc][topic]):
+            top_topics_by_doc.setdefault(doc, []).append(topic)
+            docs_by_topic.setdefault(topic, []).append(doc)
 
     # Load the data from the MALLET topic-keys file.
     f = codecs.open(in_topic_keys, 'r', 'utf-8')
@@ -258,7 +315,10 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
             toks_annotated = []
             for tok in toks:
                 match_tok = tok.lower()
-                if match_tok.isalpha() and match_tok not in stopwords:
+                # The last condition is because the first line is supposed
+                # to contain a title that is not included in a subunit.
+                if match_tok.isalpha() and match_tok not in stopwords \
+                        and not (subunits and i == 0):
                     wordtype, topic = state.pop(0)
                     if wordtype != match_tok:
                         print doc, 'line', i, ': expected', wordtype, \
@@ -490,6 +550,11 @@ if __name__ == '__main__':
                       type=str, action='store', default=None,
                       help='file (whitespace-delimited) containing extra'
                       ' stopwords')
+
+    parser.add_option('--model-trained-on-subunits', dest='subunits',
+                      action='store_true',
+                      help='indicates that the model was trained on subunits'
+                      ' of the texts (e.g. paragraphs)')
 
     (options, args) = parser.parse_args()
 

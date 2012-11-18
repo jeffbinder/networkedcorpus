@@ -51,3 +51,21 @@ The Networked Corpus script has a few options that you can adjust.  To see a lis
     python gen-networked-corpus.py --help
 
 Enjoy!
+
+# Training the topic model on subunits
+
+Sometimes topic modeling works better if the model is trained on relatively small units, such as individual paragraphs, rather than whole chapters or texts.  This is especially true when one is attempting to train a model on a single book.  The Networked Corpus has a special feature that allows you to train a topic model on small divisions of texts (e.g., paragraphs), but visualize it in larger units (e.g., whole chapters).
+
+For this to work, the files need to follow a naming convention.  If the documents are named 'ch1.txt', 'ch2.txt', etc., the files for individual paragraphs (or whatever subunits you want to use) will have to be named 'ch1-1.txt', 'ch1-2.txt', etc.  These files should contain the first paragraph of chapter 1, the second paragraph, etc.  Additionally, while the files for complete documents should contain a title on the first line as usual, the titles should not appear in any of the subunit documents.
+
+Let's suppose that the complete chapters, in the format specified above, are in a directory called 'chapters' and the paragraphs are in a directory called 'paragraphs'.  Then you can train a paragraph-based topic model like this:
+
+    mallet import-dir --input pargraphs --output paragraphs.mallet --keep-sequence --remove-stopwords --token-regex '[\p{L}\p{M}]+'
+
+    mallet train-topics --input paragraphs.mallet --num-topics 100 --output-state topic_state.gz --output-topic-keys topic_keys.txt --output-doc-topics doc_topics.txt
+
+Once the machine learning is done, you can generate the Networked Corpus with pages for full chapters, but using this paragraph-based topic model:
+
+    python gen-networked-corpus.py --input-dir chapters --output-dir <OUTPUT DIRECTORY> --model-trained-on-subunits
+
+The '--model-trained-on-subunits' tells the program that the MALLET output files it will be reading contains data for subunits of the texts, rather than the texts themselves.  Assuming that the files were named correctly, it should be able to piece the data together into a visualizer with one page for each complete chapter.
