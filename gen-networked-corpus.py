@@ -17,7 +17,7 @@ description_text = \
 'Generate an annotated HTML version of a corpus based on a MALLET topic model.'
 
 # Preface of the generated HTML files.
-html1 = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+html1 = u'''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -51,14 +51,14 @@ html1 = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http:
 '''
 
 # End of the generated HTML files.
-html2 = '''
+html2 = u'''
   </div>
  </body>
 </html>
 '''
 
 # Preface of the generated index file.
-index_html1 = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+index_html1 = u'''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -79,7 +79,7 @@ index_html1 = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 '''
 
 # End of the generated index file.
-index_html2 = '''
+index_html2 = u'''
     </table>
   </div>
  </body>
@@ -87,7 +87,7 @@ index_html2 = '''
 '''
 
 # Preface of the generated topic index file.
-topic_index_html1 = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+topic_index_html1 = u'''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -118,7 +118,7 @@ this_doc = null;
 '''
 
 # End of the generated topic index file.
-topic_index_html2 = '''
+topic_index_html2 = u'''
     </table>
   </div>
  </body>
