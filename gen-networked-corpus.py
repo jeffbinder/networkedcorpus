@@ -257,7 +257,7 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
     # Sort out the top topics by document.
     for doc in topic_coefs_by_doc:
         for topic in sorted(topic_coefs_by_doc[doc],
-                            key=lambda topic: -topic_coefs_by_doc[doc][topic]):
+                            key=lambda topic: -topic_coefs_by_doc[doc][topic])[:9]:
             top_topics_by_doc.setdefault(doc, []).append(topic)
             docs_by_topic.setdefault(topic, []).append(doc)
 
