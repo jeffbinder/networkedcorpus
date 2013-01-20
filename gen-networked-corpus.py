@@ -494,6 +494,7 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
             outf.write('<td valign="top" rowspan="' + str(ntopics + 1)
                        + '" id="popup-cell"><div id="popup-area"></div></td>')
         outf.write('</tr>')
+    outf.write('<tr><td class="blank-index-entry">&nbsp;</td></tr>')
     outf.write(topic_index_html2)
 
     # Copy the resource files to the output directory.
