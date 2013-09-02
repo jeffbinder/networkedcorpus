@@ -320,10 +320,11 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
                 if match_tok.isalpha() and match_tok not in stopwords \
                         and not (subunits and i == 0):
                     wordtype, topic = state.pop(0)
+                    match_tok = u'\xc3'
                     if wordtype != match_tok:
                         print doc, 'line', i, \
-                            '- unable to match input file with MALLET token stream: expected \'' \
-                            + str(wordtype) + '\' but found \'' + str(match_tok) + '\'.'
+                            u'- unable to match input file with MALLET token stream: expected \'' \
+                            + unicode(wordtype) + u'\' but found \'' + unicode(match_tok) + u'\'.'
                         print 'Please check your MALLET tokenization settings.  If you are using a custom'
                         print 'stopwords list, you must specify it on the command line when running this'
                         print 'script.'
