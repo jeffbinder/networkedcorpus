@@ -52,6 +52,12 @@ The Networked Corpus script has a few options that you can adjust.  To see a lis
 
 Enjoy!
 
+# Working with custom stopwords lists
+
+Ordinarily, topic modeling programs are instructed to ignore very common words like "the" and "an".  These are called "stopwords".  By default, MALLET uses a built-in list of common English words.  However, if you are working with text in an old or non-standard dialect of English, you might wish to add additional stopwords; and if you are working with text in a lanugage other than English, you will probably want to replace it altogether.  MALLET allows you to add extra stopwords using the --extra-stopwords option, and to replace the list using --stoplist-file.
+
+If you do this, then you will need to specify the same options when you run gen-networked-corpus.py, or else you will get an error.  This is because, in order to reconstruct the files, the script needs to know exactly how the token stream produced by MALLET matches up with the original text files.
+
 # Training the topic model on subunits
 
 Sometimes topic modeling works better if the model is trained on relatively small units, such as individual paragraphs, rather than whole chapters or texts.  This is especially true when one is attempting to train a model on a single book.  The Networked Corpus has a special feature that allows you to train a topic model on small divisions of texts (e.g., paragraphs), but visualize it in larger units (e.g., whole chapters).

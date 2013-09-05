@@ -176,7 +176,7 @@ def parse_subdoc(subdoc):
 def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
                     outdir, min_topic_appearances, min_pointedness,
                     num_words_per_topic, resdir, bandwidth,
-                    extra_stopwords, subunits):
+                    stopwords, extra_stopwords, subunits):
 
     topic_state = {}
     topic_appearances_by_doc = {}
@@ -186,8 +186,12 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
 
     # Load 'stopwords.txt' from the resource directory, as well as the
     # file with additional stopwords (if one is specified).
-    stopwords_file = open(os.path.join(resdir, 'stopwords.txt'))
-    stopwords = stopwords_file.read().split(' ')
+    if stopwords:
+        stopwords_file = codecs.open(stopwords, 'r', 'utf-8')
+        stopwords = stopwords_file.read().strip().split('\n')
+    else:
+        stopwords_file = open(os.path.join(resdir, 'stopwords.txt'))
+        stopwords = stopwords_file.read().strip().split(' ')
     stopwords_file.close()
     if extra_stopwords:
         extra_stopwords_file = codecs.open(extra_stopwords, 'r', 'utf-8')
@@ -551,10 +555,15 @@ if __name__ == '__main__':
                       help='amount of smoothing to apply to the density'
                       ' functions (default 6.0)')
 
+    parser.add_option('--stoplist-file', dest='stopwords',
+                      type=str, action='store', default=None,
+                      help='file (whitespace-delimited) containing the list of'
+                      ' stopwords')
+
     parser.add_option('--extra-stopwords', dest='extra_stopwords',
                       type=str, action='store', default=None,
                       help='file (whitespace-delimited) containing extra'
-                      ' stopwords')
+                      ' stopwords to add to the default list')
 
     parser.add_option('--model-trained-on-subunits', dest='subunits',
                       action='store_true',
