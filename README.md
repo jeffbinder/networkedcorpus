@@ -18,6 +18,8 @@ To use this script, you will need to have the following software installed:
 
 These instructions assume that all of this software is installed and working, and that you know how to run executable files from the command line.
 
+You can download the Networked Corpus script using the "Download ZIP" button on the right.  The directory "res" will need to be in the same location as gen-networked-corpus.py for the script to work.
+
 # Preparing the texts
 
 The first step is to get the texts into the right format.  Each text in your collection will need to be in a separate plain text file, ASCII or UTF-8 encoded.  A "text" might be defined as an issue of a periodical, a book, a letter, or, if you are working with a single book, a chapter; however, we have found that topic modeling does not work very well when applied to the chapters of a single novel.  The files should all be in the same directory, and the directory should not contain anything else.
