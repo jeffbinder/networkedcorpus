@@ -297,7 +297,7 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
     pointed_topics_by_doc = {}
     docs_by_pointed_topic = {}
     for doc in os.listdir(indir):
-        state = list(topic_state[doc])
+        state = list(topic_state.get(doc, []))
         pointed_topics_by_doc[doc] = []
 
         f = codecs.open(os.path.join(indir, doc), 'r', 'utf-8')
@@ -344,7 +344,7 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
         topic_density_fcns = {}
         topic_density_maxima = {}
         for topic in top_words_by_topic:
-            if not (topic in top_topics_by_doc[doc]
+            if not (topic in top_topics_by_doc.get(doc, [])
                     or topic in pointed_topics_by_doc[doc]):
                 continue
             appearances = [float(x) for x in topic_appearances[topic]]
@@ -384,7 +384,7 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
         outf.write('<script>\n')
         outf.write('density_fcns = ' + json.dumps(topic_density_fcns) + ';\n')
         outf.write('this_doc = "' + doc + '";\n')
-        outf.write('top_topics = ' + json.dumps(top_topics_by_doc[doc]) + ';\n')
+        outf.write('top_topics = ' + json.dumps(top_topics_by_doc.get(doc, [])) + ';\n')
         outf.write('</script>\n')
         outf.write('<table id="text-table">')
         extracts[doc] = {}
@@ -409,7 +409,7 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
                     extracts[doc][topic] = ''.join(tok for tok, topic
                                                    in extract_toks)
             for tok, topic in toks:
-                if topic in top_topics_by_doc[doc] \
+                if topic in top_topics_by_doc.get(doc, []) \
                         or topic in pointed_topics_by_doc[doc]:
                     outf.write('<span class="topic' + str(topic) + '">' +
                                tok + '</span>')
