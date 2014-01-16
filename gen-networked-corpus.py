@@ -508,6 +508,12 @@ def gen_annotations(indir, in_doc_topics, in_topic_keys, in_topic_state,
     # Copy the resource files to the output directory.
     for filename in resource_files:
         shutil.copy(os.path.join(resdir, filename), outdir)
+    
+    # Print a summary of the exemplary/pointed passages that were found.
+    print 'Summary of links generated:'
+    print 'Topic\tNum. linked passages'
+    for topic in topic_list:
+        print '{0}\t{1}'.format(topic, len(docs_by_pointed_topic.get(topic, [])))
 
 
 if __name__ == '__main__':
