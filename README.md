@@ -22,7 +22,7 @@ You can download the Networked Corpus script using the "Download ZIP" button on 
 
 # Preparing the texts
 
-The first step is to get the texts into the right format.  Each text in your collection will need to be in a separate plain text file, ASCII or UTF-8 encoded.  A "text" might be defined as an issue of a periodical, a book, a letter, or, if you are working with a single book, a chapter; however, we have found that topic modeling does not work very well when applied to the chapters of a single novel.  The files should all be in the same directory, and the directory should not contain anything else.
+The first step is to get the texts into the right format.  Each text in your collection will need to be in a separate plain text file, ASCII or UTF-8 encoded.  A "text" might be defined as an issue of a periodical, a book, a letter, or, if you are working with a single book, a chapter; however, we have found that topic modeling does not work very well when applied to the chapters of a single novel.  The files should all be in the same directory, and the directory should not contain anything else.  The files must not have spaces in their names.
 
 The text files must have hard line breaks at the end of each line.  This is used to calculate how far down the page a word occurs, and also affects how wide the text will appear in the browser.  If your source documents do not have line breaks and you are on a Mac or Linux system, you can use the 'fold' command to wrap them automatically.  It doesn't matter whether the line breaks are Unix or DOS-style.
 
